@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minhas Finanças</title>
+  <meta name="description" content="Controle financeiro pessoal">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;1,14..32,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/transactions.css">
+  <link rel="stylesheet" href="css/goals.css">
+  <link rel="stylesheet" href="css/backup.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark">
+        <!-- Ícone SVG do logo: gráfico de linha ascendente -->
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <h1>Minhas Finanças</h1>
+      </div>
+      <span>controle financeiro pessoal</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu</div>
+
+      <a href="#dashboard" class="nav-item active">
+        <div class="nav-icon-wrap">
+          <!-- Ícone: grid/dashboard -->
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </div>
+        Dashboard
+      </a>
+
+      <a href="#transactions" class="nav-item">
+        <div class="nav-icon-wrap">
+          <!-- Ícone: setas de transferência -->
+          <svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+        </div>
+        Transações
+      </a>
+
+      <a href="#goals" class="nav-item">
+        <div class="nav-icon-wrap">
+          <!-- Ícone: alvo/meta -->
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+        </div>
+        Metas
+      </a>
+
+      <div class="nav-section-label" style="margin-top: var(--space-3)">Sistema</div>
+
+      <a href="#backup" class="nav-item">
+        <div class="nav-icon-wrap">
+          <!-- Ícone: escudo com check (proteção/backup) -->
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        Backup
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-info">
+        <div class="footer-dot"></div>
+        <p>Dados no seu navegador</p>
+      </div>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- CONTEÚDO -->
+  <main class="main-content">
+    <header class="main-header">
+      <!-- Hamburguer mobile -->
+      <button class="menu-toggle" id="menu-toggle" title="Menu">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+
+      <!-- Breadcrumb -->
+      <div class="header-breadcrumb">
+        <span class="header-app-name">Minhas Finanças</span>
+        <span class="header-sep">/</span>
+        <span class="header-title" id="header-title">Dashboard</span>
+      </div>
+
+      <div class="header-actions">
+        <!-- Toggle dark/light mode -->
+        <button class="dark-mode-toggle" id="dark-mode-toggle">
+          <div class="dm-icon-wrap">
+            <span id="dm-icon">☀️</span>
+          </div>
+          <span id="dm-label">Claro</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="page-container" id="page-container">
+      <div class="spinner"></div>
+    </div>
+  </main>
+</div>
+
+<script src="js/store.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/components/modal.js"></script>
+<script src="js/pages/dashboard.js"></script>
+<script src="js/pages/transactions.js"></script>
+<script src="js/pages/goals.js"></script>
+<script src="js/pages/backup.js"></script>
+<script src="js/router.js"></script>
+
+<script>
+  /* Inicialização */
+  Store.init();
+
+  /* Modo claro/escuro salvo */
+  const isDark = Store.prefs.getDarkMode();
+  if (!isDark) {
+    document.body.classList.add('light-mode');
+    document.getElementById('dm-icon').textContent  = '🌙';
+    document.getElementById('dm-label').textContent = 'Escuro';
+  }
+
+  document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+    const isLight = document.body.classList.toggle('light-mode');
+    document.getElementById('dm-icon').textContent  = isLight ? '🌙' : '☀️';
+    document.getElementById('dm-label').textContent = isLight ? 'Escuro' : 'Claro';
+    Store.prefs.setDarkMode(!isLight);
+  });
+
+  /* Menu mobile */
+  const sidebar   = document.getElementById('sidebar');
+  const overlay   = document.getElementById('sidebar-overlay');
+  const menuBtn   = document.getElementById('menu-toggle');
+
+  menuBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('visible');
+  });
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('visible');
+  });
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+    });
+  });
+
+  Router.init();
+</script>
+</body>
+</html>
